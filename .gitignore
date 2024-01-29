@@ -1,0 +1,13 @@
+# Ignore compiled binaries and executables
+**/target/
+**/Cargo.lock
+
+# Ignore VS Code settings (if using VS Code)
+**/.vscode/
+
+# Ignore IDEA settings (if using IntelliJ IDEA)
+**/.idea/
+
+# Ignore any user-specific files or directories
+**/.DS_Store
+**/Thumbs.db
