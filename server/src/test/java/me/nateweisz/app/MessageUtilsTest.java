@@ -3,6 +3,7 @@
  */
 package me.nateweisz.app;
 
+import me.nateweisz.server.MessageUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

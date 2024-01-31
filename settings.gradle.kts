@@ -7,4 +7,4 @@ plugins {
 }
 
 rootProject.name = "atlas"
-include("server", "node")
+include("server", "node", "protocol")
