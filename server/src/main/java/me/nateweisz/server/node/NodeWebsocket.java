@@ -55,27 +55,30 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
         
         // get the packet id
         byte id = buffer.getByte(0);
-        
-        // ensure client is attempting to authenticate before sending any other packets
-        if (!clientState.isAuthenticated() && id != 0x00) {
-            logger.log(Level.SEVERE, "Received a packet before authentication was completed.");
-            serverWebSocket.close();
-            return;
-        }
         Packet packet = getServerBoundPacket(id, buffer);
-        
+
         if (packet == null) {
             logger.log(Level.SEVERE, "Received an invalid packet.");
             serverWebSocket.close();
             return;
         }
         
-        if (packet instanceof C2SAuthenticatePacket) {
-            // TODO: perform authentication
-            // TODO: create an event bus to handle packet receiving
-            clientState.setAuthenticated();
-            sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(true, "PLACEHOLDER"), serverWebSocket);
+        // ensure client is attempting to authenticate before sending any other packets
+        if (!clientState.isAuthenticated()) {
+            if (id != 0x00) {
+                logger.log(Level.SEVERE, "Received a packet before authentication was completed.");
+                serverWebSocket.close();
+                return;
+            }
+
+            if (packet instanceof C2SAuthenticatePacket) {
+                // TODO: perform authentication
+                clientState.setAuthenticated();
+                sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(true, "PLACEHOLDER"), serverWebSocket);
+            }
         }
+        
+        // TODO: implement event bus to handle packet receiving
     }
     
     private <T extends Packet> T getServerBoundPacket(byte id, Buffer buffer) {
