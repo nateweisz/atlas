@@ -7,6 +7,10 @@ public class C2SAuthenticatePacket implements Packet {
     
     private final String secret;
     
+    public C2SAuthenticatePacket(String secret) {
+        this.secret = secret;
+    }
+    
     public C2SAuthenticatePacket(Buffer buffer) {
         this.secret = buffer.getString(0, buffer.length());
     }

@@ -9,6 +9,10 @@ public class C2SHeartbeatPacket implements Packet {
     
     private final Instant timestamp;
     
+    public C2SHeartbeatPacket(Instant timestamp) {
+        this.timestamp = timestamp;
+    }
+    
     public C2SHeartbeatPacket(Buffer buffer) {
         this.timestamp = Instant.ofEpochMilli(buffer.getLong(0));
     }

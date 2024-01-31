@@ -4,7 +4,9 @@ import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
 import me.nateweisz.server.node.packet.Packet;
+import me.nateweisz.server.node.packet.Protocol;
 import me.nateweisz.server.node.packet.clientbound.S2CAuthenticationStatusPacket;
+import me.nateweisz.server.node.packet.serverbound.C2SAuthenticatePacket;
 import me.nateweisz.server.node.state.ClientState;
 
 import java.util.HashMap;
@@ -60,7 +62,28 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
             serverWebSocket.close();
             return;
         }
+        Packet packet = getServerBoundPacket(id, buffer);
         
+        if (packet == null) {
+            logger.log(Level.SEVERE, "Received an invalid packet.");
+            serverWebSocket.close();
+            return;
+        }
+        
+        if (packet instanceof C2SAuthenticatePacket) {
+            // TODO: perform authentication
+            // TODO: create an event bus to handle packet receiving
+            clientState.setAuthenticated();
+            sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(true), serverWebSocket);
+        }
+    }
+    
+    private <T extends Packet> T getServerBoundPacket(byte id, Buffer buffer) {
+        return getPacket(Protocol.SERVER_BOUND, id, buffer);
+    }
+    
+    private <T extends Packet> T getClientBoundPacket(byte id, Buffer buffer) {
+        return getPacket(Protocol.CLIENT_BOUND, id, buffer);
     }
     
     private void sendPacket(byte id, Packet packet, ServerWebSocket serverWebSocket) {
@@ -68,5 +91,14 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
         buffer.appendByte(id);
         packet.serialize(buffer);
         serverWebSocket.writeBinaryMessage(buffer);
+    }
+
+    private <T extends Packet> T getPacket(Map<Byte, Class<? extends Packet>> packets, byte id, Buffer buffer) {
+        try {
+            return (T) packets.get(id).getConstructor(Buffer.class).newInstance(buffer);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Failed to create packet instance.", e);
+            return null;
+        }
     }
 }
