@@ -74,7 +74,7 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
             // TODO: perform authentication
             // TODO: create an event bus to handle packet receiving
             clientState.setAuthenticated();
-            sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(true), serverWebSocket);
+            sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(true, "PLACEHOLDER"), serverWebSocket);
         }
     }
     
