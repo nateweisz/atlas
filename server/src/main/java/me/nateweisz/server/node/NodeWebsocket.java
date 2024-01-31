@@ -3,6 +3,7 @@ package me.nateweisz.server.node;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
+import me.nateweisz.server.node.eventbus.EventDispatcher;
 import me.nateweisz.server.node.packet.Packet;
 import me.nateweisz.server.node.packet.Protocol;
 import me.nateweisz.server.node.packet.clientbound.S2CAuthenticationStatusPacket;
@@ -18,10 +19,12 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
     
     private final Logger logger;
     private final Map<ServerWebSocket, ClientState> connections;
+    private final EventDispatcher packetEventDispatcher;
 
     public NodeWebsocket() {
         this.logger = Logger.getLogger(NodeWebsocket.class.getName());
         this.connections = new HashMap<>();
+        this.packetEventDispatcher = new EventDispatcher();
     }
     
     @Override
