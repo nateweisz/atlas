@@ -23,6 +23,6 @@ public class C2SHeartbeatPacket implements Packet {
 
     @Override
     public void serialize(Buffer buffer) {
-        
+        buffer.appendLong(timestamp.toEpochMilli());
     }
 }
