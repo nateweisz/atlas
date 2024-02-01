@@ -23,4 +23,12 @@ public class S2CAuthenticationStatusPacket implements Packet {
         buffer.appendByte(success ? (byte) 0 : (byte) 1); // 0 = true, 1 = false
         buffer.appendString(message);
     }
+    
+    public boolean isSuccess() {
+        return success;
+    }
+    
+    public String getMessage() {
+        return message;
+    }
 }

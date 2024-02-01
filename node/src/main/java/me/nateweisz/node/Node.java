@@ -5,8 +5,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientOptions;
-
-import java.util.logging.Logger;
+import me.nateweisz.node.socket.ServerWebsocket;
 
 // TODO: Add options to only accept nodes from certain ips
 public class Node extends AbstractVerticle {
@@ -20,15 +19,15 @@ public class Node extends AbstractVerticle {
 
     @Override
     public void start(Promise<Void> startPromise) {
-        init(startPromise);
+        init();
     }
 
-    private void init(Promise<Void> startPromise) {
+    private void init() {
         HttpClientOptions options = new HttpClientOptions().setSsl(false);
         HttpClient client = vertx.createHttpClient(options);
         
-        client.webSocket(8080, "localhost", "/", websocket -> {
-            System.out.println("Connected to server");
-        });
+        String secret = "secretTEST123";
+        
+        client.webSocket(8080, "localhost", "/", new ServerWebsocket(secret));
     }
 }

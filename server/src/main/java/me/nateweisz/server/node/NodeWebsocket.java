@@ -3,7 +3,7 @@ package me.nateweisz.server.node;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
-import me.nateweisz.server.node.eventbus.EventDispatcher;
+import me.nateweisz.protocol.eventbus.EventDispatcher;
 import me.nateweisz.protocol.Packet;
 import me.nateweisz.protocol.Protocol;
 import me.nateweisz.protocol.clientbound.S2CAuthenticationStatusPacket;
@@ -56,6 +56,8 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
             return;
         }
         
+        serverWebSocket.accept();
+        
         ClientState clientState = connections.get(serverWebSocket);
         
         // get the packet id
@@ -78,6 +80,7 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
 
             if (packet instanceof C2SAuthenticatePacket) {
                 if (!((C2SAuthenticatePacket) packet).getSecret().equals(secret)) {
+                    logger.log(Level.SEVERE, "Invalid secret provided: " + ((C2SAuthenticatePacket) packet).getSecret() + " != " + secret);
                     sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(false, "Invalid secret"), serverWebSocket);
                     serverWebSocket.close();
                     return;
@@ -93,10 +96,6 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
     
     private <T extends Packet> T getServerBoundPacket(byte id, Buffer buffer) {
         return getPacket(Protocol.SERVER_BOUND, id, buffer);
-    }
-    
-    private <T extends Packet> T getClientBoundPacket(byte id, Buffer buffer) {
-        return getPacket(Protocol.CLIENT_BOUND, id, buffer);
     }
     
     private void sendPacket(byte id, Packet packet, ServerWebSocket serverWebSocket) {

@@ -1,4 +1,4 @@
-package me.nateweisz.server.node.eventbus;
+package me.nateweisz.protocol.eventbus;
 
 import me.nateweisz.protocol.Packet;
 
