@@ -10,22 +10,20 @@ import me.nateweisz.protocol.clientbound.S2CAuthenticationStatusPacket;
 import me.nateweisz.protocol.serverbound.C2SAuthenticatePacket;
 import me.nateweisz.server.node.state.ClientState;
 
+import javax.crypto.SecretKey;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class NodeWebsocket implements Handler<ServerWebSocket>  {
-    
     private final Logger logger;
-    private final Map<ServerWebSocket, ClientState> connections;
-    private final EventDispatcher packetEventDispatcher;
+    private final NodeManager nodeManager;
     private final String secret;
 
-    public NodeWebsocket(String secret) {
+    public NodeWebsocket(NodeManager nodeManager, String secret) {
+        this.nodeManager = nodeManager;
         this.logger = Logger.getLogger(NodeWebsocket.class.getName());
-        this.connections = new HashMap<>();
-        this.packetEventDispatcher = new EventDispatcher();
         this.secret = secret;
     }
     
@@ -34,7 +32,8 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
         // TODO: perform validation for IP incase the user wants to limit it.
         logger.log(Level.INFO, "New connection from " + serverWebSocket.remoteAddress());
         // initialize client state as unauthenticated
-        connections.put(serverWebSocket, new ClientState());
+        nodeManager.getConnections().put(serverWebSocket, new ClientState());
+        
         
         serverWebSocket.binaryMessageHandler(buffer -> {
             handlePacket(buffer, serverWebSocket);
@@ -58,7 +57,7 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
         
         serverWebSocket.accept();
         
-        ClientState clientState = connections.get(serverWebSocket);
+        ClientState clientState = nodeManager.getConnections().get(serverWebSocket);
         
         // get the packet id
         byte id = buffer.getByte(0);
@@ -91,7 +90,7 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
             }
         }
         
-        packetEventDispatcher.dispatchEvent(packet);
+        nodeManager.getPacketEventDispatcher().dispatchEvent(packet);
     }
     
     private <T extends Packet> T getServerBoundPacket(byte id, Buffer buffer) {
