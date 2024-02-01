@@ -54,6 +54,14 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
             serverWebSocket.close();
             return;
         }
+
+
+        // need to do testing to limit max packet size (this will prob be lower)
+        if (buffer.length() > 1024) {
+            logger.log(Level.SEVERE, "Recieved a packet too large: " + buffer.length());
+            serverWebSocket.close();
+            return;
+        }
         
         serverWebSocket.accept();
         
