@@ -90,7 +90,7 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
             }
         }
         
-        nodeManager.getPacketEventDispatcher().dispatchEvent(packet);
+        nodeManager.getPacketEventDispatcher().dispatchEvent(packet, serverWebSocket);
     }
     
     private <T extends Packet> T getServerBoundPacket(byte id, Buffer buffer) {

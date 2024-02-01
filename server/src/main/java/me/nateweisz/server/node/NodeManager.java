@@ -26,6 +26,10 @@ public class NodeManager {
         // TODO: remove client from connections and handle any cleanup / logging we need to do
     }
 
+    public ClientState getConnection(ServerWebSocket serverWebSocket) {
+        return connections.get(serverWebSocket);
+    }
+
     public Map<ServerWebSocket, ClientState> getConnections() {
         return connections;
     }

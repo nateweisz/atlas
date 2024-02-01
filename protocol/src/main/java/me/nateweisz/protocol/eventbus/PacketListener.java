@@ -1,6 +1,7 @@
 package me.nateweisz.protocol.eventbus;
 
 import me.nateweisz.protocol.Packet;
+import io.vertx.core.http.ServerWebSocket;
 
 /**
  * A listener for a specific packet type.
@@ -9,5 +10,7 @@ import me.nateweisz.protocol.Packet;
  */
 public interface PacketListener<T extends Packet> {
     Class<T> getPacketType();
-    void handle(T packet);
+
+    // listeners on the node should never touch  the serverWebSocket since it will be passed in as null there.
+    void handle(T packet, ServerWebSocket serverWebSocket);
 }
