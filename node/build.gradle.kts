@@ -21,6 +21,8 @@ dependencies {
     implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
     implementation("io.vertx:vertx-web")
     implementation("io.vertx:vertx-json-schema")
+    implementation("com.github.docker-java:docker-java:3.3.4")
+    implementation("com.github.docker-java:docker-java-transport-httpclient5:3.3.4")
     testImplementation("io.vertx:vertx-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")}
 
