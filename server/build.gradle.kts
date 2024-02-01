@@ -16,6 +16,7 @@ val watchForChange = "src/**/*"
 val doOnChange = "${projectDir}/gradlew classes"
 
 dependencies {
+    implementation(project(":protocol"))
     implementation("org.apache.commons:commons-text")
     implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
     implementation("io.vertx:vertx-web")

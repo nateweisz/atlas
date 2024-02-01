@@ -1,6 +1,6 @@
 package me.nateweisz.server.node.eventbus;
 
-import me.nateweisz.server.node.packet.Packet;
+import me.nateweisz.protocol.Packet;
 
 /**
  * A listener for a specific packet type.

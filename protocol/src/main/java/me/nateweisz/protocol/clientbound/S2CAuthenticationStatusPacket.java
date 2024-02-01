@@ -1,8 +1,7 @@
-package me.nateweisz.server.node.packet.clientbound;
+package me.nateweisz.protocol.clientbound;
 
-import io.netty.handler.codec.http.websocketx.WebSocket00FrameDecoder;
 import io.vertx.core.buffer.Buffer;
-import me.nateweisz.server.node.packet.Packet;
+import me.nateweisz.protocol.Packet;
 
 public class S2CAuthenticationStatusPacket implements Packet {
     

@@ -30,9 +30,10 @@ public class Server extends AbstractVerticle {
     }
     
     private void setupHttpServer(Promise<Void> startPromise) {
+        String secret = "secretTEST123";
         httpServer = vertx.createHttpServer()
-                .webSocketHandler(new NodeWebsocket())
-                .listen(8888, http -> {
+                .webSocketHandler(new NodeWebsocket(secret))
+                .listen(8080, http -> {
                     if (http.succeeded()) {
                         startPromise.complete();
                         LOGGER.info("HTTP server started on port 8888");

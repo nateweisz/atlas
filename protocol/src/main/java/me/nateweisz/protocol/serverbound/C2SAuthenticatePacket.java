@@ -1,7 +1,7 @@
-package me.nateweisz.server.node.packet.serverbound;
+package me.nateweisz.protocol.serverbound;
 
 import io.vertx.core.buffer.Buffer;
-import me.nateweisz.server.node.packet.Packet;
+import me.nateweisz.protocol.Packet;
 
 public class C2SAuthenticatePacket implements Packet {
     

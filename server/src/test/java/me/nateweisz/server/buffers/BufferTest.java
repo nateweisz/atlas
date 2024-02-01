@@ -2,7 +2,7 @@ package me.nateweisz.server.buffers;
 
 
 import io.vertx.core.buffer.Buffer;
-import me.nateweisz.server.node.packet.Packet;
+import me.nateweisz.protocol.Packet;
 import org.junit.jupiter.api.Test;
 
 // TODO: write a test here to validate appending and reading from a buffer

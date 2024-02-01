@@ -1,8 +1,8 @@
-package me.nateweisz.server.node.packet;
+package me.nateweisz.protocol;
 
-import me.nateweisz.server.node.packet.clientbound.S2CAuthenticationStatusPacket;
-import me.nateweisz.server.node.packet.serverbound.C2SAuthenticatePacket;
-import me.nateweisz.server.node.packet.serverbound.C2SHeartbeatPacket;
+import me.nateweisz.protocol.clientbound.S2CAuthenticationStatusPacket;
+import me.nateweisz.protocol.serverbound.C2SAuthenticatePacket;
+import me.nateweisz.protocol.serverbound.C2SHeartbeatPacket;
 
 import java.util.Map;
 

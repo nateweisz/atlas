@@ -4,10 +4,10 @@ import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
 import me.nateweisz.server.node.eventbus.EventDispatcher;
-import me.nateweisz.server.node.packet.Packet;
-import me.nateweisz.server.node.packet.Protocol;
-import me.nateweisz.server.node.packet.clientbound.S2CAuthenticationStatusPacket;
-import me.nateweisz.server.node.packet.serverbound.C2SAuthenticatePacket;
+import me.nateweisz.protocol.Packet;
+import me.nateweisz.protocol.Protocol;
+import me.nateweisz.protocol.clientbound.S2CAuthenticationStatusPacket;
+import me.nateweisz.protocol.serverbound.C2SAuthenticatePacket;
 import me.nateweisz.server.node.state.ClientState;
 
 import java.util.HashMap;
@@ -20,11 +20,13 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
     private final Logger logger;
     private final Map<ServerWebSocket, ClientState> connections;
     private final EventDispatcher packetEventDispatcher;
+    private final String secret;
 
-    public NodeWebsocket() {
+    public NodeWebsocket(String secret) {
         this.logger = Logger.getLogger(NodeWebsocket.class.getName());
         this.connections = new HashMap<>();
         this.packetEventDispatcher = new EventDispatcher();
+        this.secret = secret;
     }
     
     @Override
@@ -75,13 +77,18 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
             }
 
             if (packet instanceof C2SAuthenticatePacket) {
-                // TODO: perform authentication
+                if (!((C2SAuthenticatePacket) packet).getSecret().equals(secret)) {
+                    sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(false, "Invalid secret"), serverWebSocket);
+                    serverWebSocket.close();
+                    return;
+                }
+                
                 clientState.setAuthenticated();
-                sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(true, "PLACEHOLDER"), serverWebSocket);
+                sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(true, "Authentication successful"), serverWebSocket);
             }
         }
         
-        // TODO: implement event bus to handle packet receiving
+        packetEventDispatcher.dispatchEvent(packet);
     }
     
     private <T extends Packet> T getServerBoundPacket(byte id, Buffer buffer) {
