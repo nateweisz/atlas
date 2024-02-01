@@ -1,5 +1,6 @@
 package me.nateweisz.server.eventbus;
 
+import io.vertx.core.buffer.Buffer;
 import me.nateweisz.server.node.eventbus.*;
 import me.nateweisz.server.node.packet.Packet;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ public class EventDispatcherTest {
         EventDispatcher ed = new EventDispatcher();
         ed.registerListener(new TestListener(-1));
 
-        Packet packet = new TestPacket(0);
+        TestPacket packet = new TestPacket(0);
         ed.dispatchEvent(packet);
         // at this point the value of TestPacket should be -1 since there is only one listener
         assert packet.getValue() == -1;
@@ -23,14 +24,14 @@ public class EventDispatcherTest {
     }
 
     static class TestListener implements PacketListener<TestPacket> {
-        private int value;
+        private final int value;
 
         public TestListener(int value) {
             this.value = value;
         }
 
-        public Class<T> getPacketType() {
-            return TestPacket.getClass();
+        public Class<TestPacket> getPacketType() {
+            return TestPacket.class;
         }
 
         public void handle(TestPacket packet) {
