@@ -3,6 +3,7 @@ package me.nateweisz.server.node.expiry;
 import me.nateweisz.protocol.eventbus.PacketListener;
 import me.nateweisz.protocol.serverbound.C2SHeartbeatPacket;
 import io.vertx.core.http.ServerWebSocket;
+import me.nateweisz.server.node.NodeManager;
 import me.nateweisz.server.node.state.ClientState;
 
 public class HeartbeatListener implements PacketListener<C2SHeartbeatPacket> {
@@ -18,7 +19,7 @@ public class HeartbeatListener implements PacketListener<C2SHeartbeatPacket> {
 
 	public void handle(C2SHeartbeatPacket packet, ServerWebSocket serverWebSocket) {
 		ClientState state = nodeManager.getConnection(serverWebSocket);
-		state.setLastHeartbeat(packet.getTimeStamp().toEpochMilli());
+		state.setLastHeartbeat(packet.getTimestamp().toEpochMilli());
 		
 	}
 }
