@@ -1,8 +1,10 @@
 package me.nateweisz.server.eventbus;
 
 import io.vertx.core.buffer.Buffer;
-import me.nateweisz.server.node.eventbus.*;
+import io.vertx.core.http.ServerWebSocket;
+import me.nateweisz.protocol.eventbus.EventDispatcher;
 import me.nateweisz.protocol.Packet;
+import me.nateweisz.protocol.eventbus.PacketListener;
 import org.junit.jupiter.api.Test;
 
 public class EventDispatcherTest {
@@ -12,12 +14,12 @@ public class EventDispatcherTest {
         ed.registerListener(new TestListener(-1));
 
         TestPacket packet = new TestPacket(0);
-        ed.dispatchEvent(packet);
+        ed.dispatchEvent(packet, null);
         // at this point the value of TestPacket should be -1 since there is only one listener
         assert packet.getValue() == -1;
 
         ed.registerListener(new TestListener(100));
-        ed.dispatchEvent(packet);
+        ed.dispatchEvent(packet, null);
         // the value of TestPacket should now be 100 since that is the last listener of that type to be
         // invoked.
         assert packet.getValue() == 100;
@@ -34,7 +36,8 @@ public class EventDispatcherTest {
             return TestPacket.class;
         }
 
-        public void handle(TestPacket packet) {
+        @Override
+        public void handle(TestPacket packet, ServerWebSocket serverWebSocket) {
             packet.setValue(value);
         }
     }
