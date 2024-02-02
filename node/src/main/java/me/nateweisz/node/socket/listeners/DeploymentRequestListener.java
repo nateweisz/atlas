@@ -1,5 +1,6 @@
 package me.nateweisz.node.socket.listeners;
 
+import io.vertx.core.http.ServerWebSocket;
 import me.nateweisz.node.docker.DockerManager;
 import me.nateweisz.protocol.clientbound.S2CRequestDeploymentPacket;
 import me.nateweisz.protocol.eventbus.PacketListener;
@@ -17,7 +18,7 @@ public class DeploymentRequestListener implements PacketListener<S2CRequestDeplo
     }
 
     @Override
-    public void handle(S2CRequestDeploymentPacket packet) {
+    public void handle(S2CRequestDeploymentPacket packet, ServerWebSocket serverWebSocket) {
         // todo: build and compile docker image, check for already existing builds with current commit hash :D
     }
 }
