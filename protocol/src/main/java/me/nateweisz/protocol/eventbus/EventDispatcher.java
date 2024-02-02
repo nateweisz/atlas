@@ -1,5 +1,7 @@
 package me.nateweisz.protocol.eventbus;
 
+import io.vertx.core.http.ServerWebSocket;
+import io.vertx.core.http.WebSocketClient;
 import me.nateweisz.protocol.Packet;
 
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ public class EventDispatcher {
         this.listeners = new HashMap<>();
     }
 
-    public <T extends Packet> void dispatchEvent(Packet packet) {
+    public <T extends Packet> void dispatchEvent(Packet packet, ServerWebSocket serverWebSocket) {
         Class<? extends Packet> packetType = packet.getClass();
         ArrayList<PacketListener<?>> listeners = this.listeners.get(packet.getClass());
 
@@ -28,7 +30,7 @@ public class EventDispatcher {
             // ensure it is correctly bound
             if (listener.getPacketType().isAssignableFrom(packetType)) {
                 PacketListener<T> typedListener = (PacketListener) listener;
-                typedListener.handle((T) packet);
+                typedListener.handle((T) packet, serverWebSocket);
             }
         }
 

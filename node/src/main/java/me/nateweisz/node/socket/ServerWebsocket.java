@@ -62,7 +62,7 @@ public class ServerWebsocket implements Handler<AsyncResult<WebSocket>> {
         }
         
         System.out.println("Received packet: " + packet.getClass().getSimpleName());
-        eventDispatcher.dispatchEvent(packet);
+        eventDispatcher.dispatchEvent(packet, null);
     }
 
     // TODO: write abstraction for the websocket binary data stuff cause copy paste bad!!
