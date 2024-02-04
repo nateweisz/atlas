@@ -5,6 +5,8 @@ import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.http.WebSocket;
+import me.nateweisz.node.Node;
+import me.nateweisz.node.socket.listeners.DeploymentRequestListener;
 import me.nateweisz.protocol.Packet;
 import me.nateweisz.protocol.Protocol;
 import me.nateweisz.protocol.clientbound.S2CAuthenticationStatusPacket;
@@ -19,9 +21,12 @@ public class ServerWebsocket implements Handler<AsyncResult<WebSocket>> {
     private final String secret;
     private final EventDispatcher eventDispatcher;
     
-    public ServerWebsocket(String secret) {
-        this.secret = secret;
+    public ServerWebsocket(Node node) {
+        this.secret = node.getSecret();
         this.eventDispatcher = new EventDispatcher();
+        
+        // register listeners
+        eventDispatcher.registerListener(new DeploymentRequestListener(node.getDockerManager()));
     }
     
     @Override
@@ -64,9 +69,7 @@ public class ServerWebsocket implements Handler<AsyncResult<WebSocket>> {
         System.out.println("Received packet: " + packet.getClass().getSimpleName());
         eventDispatcher.dispatchEvent(packet, null);
     }
-
-    // TODO: write abstraction for the websocket binary data stuff cause copy paste bad!!
-
+    
     private <T extends Packet> T getClientBoundPacket(byte id, Buffer buffer) {
         return Protocol.getPacket(Protocol.CLIENT_BOUND, id, buffer);
     }

@@ -2,7 +2,10 @@ package me.nateweisz.server.node;
 
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClosedException;
 import io.vertx.core.http.ServerWebSocket;
+import io.vertx.core.http.StreamResetException;
+import me.nateweisz.protocol.clientbound.S2CRequestDeploymentPacket;
 import me.nateweisz.protocol.eventbus.EventDispatcher;
 import me.nateweisz.protocol.Packet;
 import me.nateweisz.protocol.Protocol;
@@ -13,6 +16,7 @@ import me.nateweisz.server.node.state.ClientState;
 import javax.crypto.SecretKey;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +48,15 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
         });
         
         serverWebSocket.exceptionHandler(throwable -> {
-            System.out.println("Exception: " + throwable.getMessage());
+            // when a node closes the stream it throws two exceptions
+            // java.net.SocketException (The general exception for all socket exceptions)
+            // io.vertx.core.http.HttpClosedException which is specifically for the stream closing
+            if (throwable instanceof HttpClosedException) {
+                // i dont care if it's closed since it already invokes the closeHandler above
+                return;
+            }
+            
+            System.out.println("Exception: " + throwable.getClass().getName());
         });
     }
     
@@ -58,7 +70,7 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
 
         // need to do testing to limit max packet size (this will prob be lower)
         if (buffer.length() > 1024) {
-            logger.log(Level.SEVERE, "Recieved a packet too large: " + buffer.length());
+            logger.log(Level.SEVERE, "Received a packet too large: " + buffer.length());
             serverWebSocket.close();
             return;
         }
@@ -95,6 +107,9 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
                 
                 clientState.setAuthenticated();
                 sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(true, "Authentication successful"), serverWebSocket);
+                
+                sendPacket((byte) 0x01, new S2CRequestDeploymentPacket(UUID.randomUUID(), "git", "nateweisz/atlas", "N/A"), serverWebSocket);
+                sendPacket((byte) 0x01, new S2CRequestDeploymentPacket(UUID.randomUUID(), "git", "nateweisz/test", "N/A"), serverWebSocket);
             }
         }
         

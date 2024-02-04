@@ -4,6 +4,7 @@ import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.http.WebSocketClient;
 import me.nateweisz.protocol.Packet;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;

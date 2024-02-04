@@ -3,6 +3,8 @@ package me.nateweisz.protocol.eventbus;
 import me.nateweisz.protocol.Packet;
 import io.vertx.core.http.ServerWebSocket;
 
+import java.io.IOException;
+
 /**
  * A listener for a specific packet type.
  *

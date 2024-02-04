@@ -1,9 +1,14 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestLogEvent.*
+import org.jetbrains.gradle.ext.Gradle
+import org.jetbrains.gradle.ext.runConfigurations
+import org.jetbrains.gradle.ext.settings
+
 
 plugins {
     id("me.nateweisz.atlas-conventions")
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
 }
 
 val vertxVersion = "4.5.2"

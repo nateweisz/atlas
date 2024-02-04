@@ -1,9 +1,13 @@
 package me.nateweisz.node.socket.listeners;
 
 import io.vertx.core.http.ServerWebSocket;
+import me.nateweisz.node.code.ICodeProvider;
+import me.nateweisz.node.code.impl.GitCodeProvider;
 import me.nateweisz.node.docker.DockerManager;
 import me.nateweisz.protocol.clientbound.S2CRequestDeploymentPacket;
 import me.nateweisz.protocol.eventbus.PacketListener;
+
+import java.io.IOException;
 
 public class DeploymentRequestListener implements PacketListener<S2CRequestDeploymentPacket> {
     private final DockerManager dockerManager;
@@ -20,5 +24,13 @@ public class DeploymentRequestListener implements PacketListener<S2CRequestDeplo
     @Override
     public void handle(S2CRequestDeploymentPacket packet, ServerWebSocket serverWebSocket) {
         // todo: build and compile docker image, check for already existing builds with current commit hash :D
+        ICodeProvider codeProvider = switch (packet.getCodeProvider()) {
+            case "git" -> new GitCodeProvider();
+            default -> throw new IllegalStateException("Unexpected value: " + packet.getCodeProvider());
+        };
+        
+        if (!codeProvider.validateRepository(packet.getPath())) {
+            System.out.println("Repo was found invalid: " + packet.getPath());
+        }
     }
 }
