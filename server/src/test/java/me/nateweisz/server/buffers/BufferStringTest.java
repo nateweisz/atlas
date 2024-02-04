@@ -8,41 +8,15 @@ public class BufferStringTest {
     
     @Test public void testStringDeserialization() {
         Buffer buffer = Buffer.buffer();
-        Packet packet = new TestPacket();
+        Packet packet = new TestingPacket(1, "TESTING STRING ONE", "STRING TWO TEST", 5);
         packet.serialize(buffer);
-        TestPacket deserialized = new TestPacket(buffer);
-        System.out.println("Value: " + deserialized.getValue());
-        System.out.println("Test: " + deserialized.getTest());
-        assert deserialized.getValue().equals("test");
-        assert deserialized.getTest().equals("a");
-    }
-
-    static class TestPacket implements Packet {
-        private final String value;
-        private final String test;
-
-        public TestPacket() {
-            this.value = "test"; // length 4
-            this.test = "a"; // length 1
-        }
-
-        public TestPacket(Buffer buffer) {
-            this.value = buffer.getString(0, 4);
-            this.test = buffer.getString(4, 5);
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public String getTest() {
-            return test;
-        }
-
-        @Override
-        public void serialize(Buffer buffer) {
-            buffer.appendString(value);
-            buffer.appendString(test);
-        }
+        TestingPacket deserialized = new TestingPacket(buffer);
+        
+        System.out.printf("%s, %s, %s, %s", deserialized.getPacketId(), deserialized.getStringOne(), deserialized.getStringTwo(), deserialized.getOtherInt());
+        
+        assert deserialized.getPacketId() == 1;
+        assert deserialized.getStringOne().equals("TESTING STRING ONE");
+        assert deserialized.getStringTwo().equals("STRING TWO TEST");
+        assert deserialized.getOtherInt() == 5;
     }
 }
