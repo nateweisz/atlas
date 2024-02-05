@@ -21,7 +21,7 @@ public class TestingPacket implements Packet {
         packetId = wrappedBuffer.nextInt();
         stringOne = wrappedBuffer.nextString();
         stringTwo = wrappedBuffer.nextString();
-        otherInt = 5;
+        otherInt = wrappedBuffer.nextInt();
     }
 
     @Override
