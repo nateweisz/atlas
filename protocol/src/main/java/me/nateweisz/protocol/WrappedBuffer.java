@@ -1,3 +1,5 @@
+package me.nateweisz.protocol;
+
 import io.vertx.core.buffer.Buffer;
 
 import java.nio.charset.StandardCharsets;
@@ -5,13 +7,6 @@ import java.nio.charset.StandardCharsets;
 public class WrappedBuffer {
     private final Buffer buffer;
     private int currentIndex;
-    
-    // byte = 1
-    // int = 4
-    // long = 8
-    // double = 8
-    // float = 4
-    // short = 2
     
     public WrappedBuffer(Buffer buffer) {
         this.buffer = buffer;
