@@ -5,6 +5,6 @@ plugins {
 val vertxVersion = "4.5.2"
 
 dependencies {
-    compileOnly(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
-    compileOnly("io.vertx:vertx-web")
+    implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
+    implementation("io.vertx:vertx-web")
 }
