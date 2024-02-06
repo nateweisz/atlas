@@ -1,4 +1,4 @@
-package me.nateweisz.server.buffers;
+package me.nateweisz.protocol;
 
 import io.vertx.core.buffer.Buffer;
 import me.nateweisz.protocol.Packet;
@@ -32,6 +32,10 @@ public class TestingPacket implements Packet {
         buffer.appendString(stringOne);
         buffer.appendInt(stringTwo.length());
         buffer.appendInt(otherInt);
+    }
+
+    public boolean equals(TestingPacket packet) {
+        return packet.getPacketId() == packetId && packet.getStringOne().equals(stringOne) && packet.getStringTwo().equals(stringTwo) && packet.getOtherInt() == otherInt;
     }
 
     public int getPacketId() {

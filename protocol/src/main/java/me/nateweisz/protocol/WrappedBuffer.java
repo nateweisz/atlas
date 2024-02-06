@@ -57,7 +57,7 @@ public class WrappedBuffer {
     public String nextString() {
         // first we will get an int before it that will represent the length of the string
         int stringLength = nextInt();
-        String value = buffer.getString(currentIndex, currentIndex + stringLength);
+        String value = buffer.getString(currentIndex, currentIndex + stringLength - 1);
         currentIndex += value.getBytes(StandardCharsets.UTF_8).length;
         return value;
     }
