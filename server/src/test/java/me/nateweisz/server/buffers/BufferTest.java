@@ -1,40 +1,22 @@
 package me.nateweisz.server.buffers;
 
-
 import io.vertx.core.buffer.Buffer;
 import me.nateweisz.protocol.Packet;
+import me.nateweisz.protocol.WrappedBuffer;
 import org.junit.jupiter.api.Test;
 
-// TODO: write a test here to validate appending and reading from a buffer
 public class BufferTest {
     
-    @Test public void testBuffer() {
+    @Test public void testStringDeserialization() {
         Buffer buffer = Buffer.buffer();
-        Packet packet = new TestPacket(42);
+        Packet packet = new TestingPacket(1, "TESTING STRING ONE", "STRING TWO TEST", 5);
         packet.serialize(buffer);
-        TestPacket deserialized = new TestPacket(buffer);
-        assert deserialized.getValue() == 42;
+        TestingPacket deserialized = new TestingPacket(new WrappedBuffer(buffer));
+        
+        System.out.printf("%s, %s, %s, %s", deserialized.getPacketId(), deserialized.getStringOne(), deserialized.getStringTwo(), deserialized.getOtherInt());
+        
+        assert deserialized.equals(packet);
     }
     
-    static class TestPacket implements Packet {
-        private final int value;
-        
-        public TestPacket(int value) {
-            this.value = value;
-        }
-        
-        public TestPacket(Buffer buffer) {
-            this.value = buffer.getInt(1);
-        }
-        
-        public int getValue() {
-            return value;
-        }
-
-        @Override
-        public void serialize(Buffer buffer) {
-            buffer.appendByte((byte) 0x00);
-            buffer.appendInt(value);
-        }
-    }
+    
 }
