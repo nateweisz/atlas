@@ -11,6 +11,7 @@ public class BufferStringTest {
         Buffer buffer = Buffer.buffer();
         Packet packet = new TestingPacket(1, "TESTING STRING ONE", "STRING TWO TEST", 5);
         packet.serialize(buffer);
+        System.out.println("BUFFER LENMGTH: " + buffer.length());
         TestingPacket deserialized = new TestingPacket(new WrappedBuffer(buffer));
         
         System.out.printf("%s, %s, %s, %s", deserialized.getPacketId(), deserialized.getStringOne(), deserialized.getStringTwo(), deserialized.getOtherInt());

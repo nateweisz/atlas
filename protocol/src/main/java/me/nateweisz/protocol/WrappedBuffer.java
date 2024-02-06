@@ -27,6 +27,7 @@ public class WrappedBuffer {
     public int nextInt() {
         int value = buffer.getInt(currentIndex);
         currentIndex += 4;
+        System.out.println(currentIndex);
         return value;
     }
     
@@ -57,8 +58,10 @@ public class WrappedBuffer {
     public String nextString() {
         // first we will get an int before it that will represent the length of the string
         int stringLength = nextInt();
+        System.out.println("STRING LENGTH IS " + stringLength);
         String value = buffer.getString(currentIndex, currentIndex + stringLength);
-        currentIndex += value.getBytes(StandardCharsets.UTF_8).length;
+        currentIndex += stringLength;
+        System.out.println(currentIndex);
         return value;
     }
 }

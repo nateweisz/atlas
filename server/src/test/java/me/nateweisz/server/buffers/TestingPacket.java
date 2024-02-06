@@ -28,9 +28,16 @@ public class TestingPacket implements Packet {
     public void serialize(Buffer buffer) {
         // append the int to the buffer at the position 0,
         buffer.appendInt(packetId);
+        
+        // append the first string
         buffer.appendInt(stringOne.length());
         buffer.appendString(stringOne);
+        
+        // append the second string
         buffer.appendInt(stringTwo.length());
+        buffer.appendString(stringTwo);
+        
+        // append the last integer
         buffer.appendInt(otherInt);
     }
 
