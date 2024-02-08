@@ -31,6 +31,8 @@ public class DeploymentRequestListener implements PacketListener<S2CRequestDeplo
         
         if (!codeProvider.validateRepository(packet.getPath())) {
             System.out.println("Repo was found invalid: " + packet.getPath());
+        } else {
+            System.out.println("Repo was found valid: " + packet.getPath());
         }
     }
 }

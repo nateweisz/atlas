@@ -118,7 +118,7 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
     }
     
     private <T extends Packet> T getServerBoundPacket(byte id, Buffer buffer) {
-        return getPacket(Protocol.SERVER_BOUND, id, buffer);
+        return Protocol.getPacket(Protocol.SERVER_BOUND, id, buffer);
     }
     
     private void sendPacket(byte id, Packet packet, ServerWebSocket serverWebSocket) {
@@ -126,15 +126,5 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
         buffer.appendByte(id);
         packet.serialize(new WrappedBuffer(buffer));
         serverWebSocket.writeBinaryMessage(buffer);
-    }
-
-    private <T extends Packet> T getPacket(Map<Byte, Class<? extends Packet>> packets, byte id, Buffer buffer) {
-        buffer = buffer.getBuffer(1, buffer.length()); // get a new buffer without the packet id in it.
-        try {
-            return (T) packets.get(id).getConstructor(WrappedBuffer.class).newInstance(new WrappedBuffer(buffer));
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to create packet instance.", e);
-            return null;
-        }
     }
 }
