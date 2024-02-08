@@ -1,6 +1,6 @@
 package me.nateweisz.protocol.serverbound;
 
-import io.vertx.core.buffer.Buffer;
+import me.nateweisz.protocol.WrappedBuffer;
 import me.nateweisz.protocol.Packet;
 
 import java.util.UUID;
@@ -19,16 +19,16 @@ public class C2SDeploymentStatusPacket implements Packet {
         this.errorMessage = errorMessage;
     }
     
-    public C2SDeploymentStatusPacket(Buffer buffer) {
-        this.deploymentId = UUID.fromString(buffer.getString(1, buffer.length()));
-        this.success = buffer.getByte(2) == 0;
-        this.errorMessage = buffer.getString(3, buffer.length());
+    public C2SDeploymentStatusPacket(WrappedBuffer buffer) {
+        this.deploymentId = UUID.fromString(buffer.nextString());
+        this.success = buffer.nextByte() == 0;
+        this.errorMessage = buffer.nextString();
     }
     
     @Override
-    public void serialize(Buffer buffer) {
-        buffer.appendString(deploymentId.toString());
-        buffer.appendByte(success ? (byte) 0 : (byte) 1);
-        buffer.appendString(errorMessage);
+    public void serialize(WrappedBuffer buffer) {
+        buffer.writeString(deploymentId.toString());
+        buffer.writeByte(success ? (byte) 0 : (byte) 1);
+        buffer.writeString(errorMessage);
     }
 }

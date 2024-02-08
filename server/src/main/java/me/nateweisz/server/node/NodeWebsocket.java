@@ -9,6 +9,7 @@ import me.nateweisz.protocol.clientbound.S2CRequestDeploymentPacket;
 import me.nateweisz.protocol.eventbus.EventDispatcher;
 import me.nateweisz.protocol.Packet;
 import me.nateweisz.protocol.Protocol;
+import me.nateweisz.protocol.WrappedBuffer;
 import me.nateweisz.protocol.clientbound.S2CAuthenticationStatusPacket;
 import me.nateweisz.protocol.serverbound.C2SAuthenticatePacket;
 import me.nateweisz.server.node.state.ClientState;
@@ -123,13 +124,14 @@ public class NodeWebsocket implements Handler<ServerWebSocket>  {
     private void sendPacket(byte id, Packet packet, ServerWebSocket serverWebSocket) {
         Buffer buffer = Buffer.buffer();
         buffer.appendByte(id);
-        packet.serialize(buffer);
+        packet.serialize(new WrappedBuffer(buffer));
         serverWebSocket.writeBinaryMessage(buffer);
     }
 
     private <T extends Packet> T getPacket(Map<Byte, Class<? extends Packet>> packets, byte id, Buffer buffer) {
+        buffer = buffer.getBuffer(1, buffer.length()); // get a new buffer without the packet id in it.
         try {
-            return (T) packets.get(id).getConstructor(Buffer.class).newInstance(buffer);
+            return (T) packets.get(id).getConstructor(WrappedBuffer.class).newInstance(new WrappedBuffer(buffer));
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to create packet instance.", e);
             return null;

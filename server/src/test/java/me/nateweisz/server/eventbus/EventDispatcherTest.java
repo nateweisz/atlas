@@ -4,6 +4,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
 import me.nateweisz.protocol.eventbus.EventDispatcher;
 import me.nateweisz.protocol.Packet;
+import me.nateweisz.protocol.WrappedBuffer;
 import me.nateweisz.protocol.eventbus.PacketListener;
 import org.junit.jupiter.api.Test;
 
@@ -58,9 +59,9 @@ public class EventDispatcherTest {
         }
 
         @Override
-        public void serialize(Buffer buffer) {
-            buffer.appendByte((byte) 0x00);
-            buffer.appendInt(value);
+        public void serialize(WrappedBuffer buffer) {
+            buffer.writeByte((byte) 0x00);
+            buffer.writeInt(value);
         }
     }
 }

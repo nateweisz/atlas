@@ -1,6 +1,6 @@
 package me.nateweisz.protocol.serverbound;
 
-import io.vertx.core.buffer.Buffer;
+import me.nateweisz.protocol.WrappedBuffer;
 import me.nateweisz.protocol.Packet;
 
 public class C2SAuthenticatePacket implements Packet {
@@ -11,8 +11,8 @@ public class C2SAuthenticatePacket implements Packet {
         this.secret = secret;
     }
     
-    public C2SAuthenticatePacket(Buffer buffer) {
-        this.secret = buffer.getString(1, buffer.length());
+    public C2SAuthenticatePacket(WrappedBuffer buffer) {
+        this.secret = buffer.nextString();
     }
 
     public String getSecret() {
@@ -20,7 +20,7 @@ public class C2SAuthenticatePacket implements Packet {
     }
 
     @Override
-    public void serialize(Buffer buffer) {
-        buffer.appendString(secret);
+    public void serialize(WrappedBuffer buffer) {
+        buffer.writeString(secret);
     }
 }

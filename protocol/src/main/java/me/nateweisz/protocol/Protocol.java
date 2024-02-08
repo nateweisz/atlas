@@ -27,7 +27,7 @@ public class Protocol {
     public static void sendPacket(byte id, Packet packet, WebSocketBase socket) {
         Buffer buffer = Buffer.buffer();
         buffer.appendByte(id);
-        packet.serialize(buffer);
+        packet.serialize(new WrappedBuffer(buffer));
         socket.writeBinaryMessage(buffer);
     }
 

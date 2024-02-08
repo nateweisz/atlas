@@ -1,6 +1,6 @@
 package me.nateweisz.protocol.clientbound;
 
-import io.vertx.core.buffer.Buffer;
+import me.nateweisz.protocol.WrappedBuffer;
 import me.nateweisz.protocol.Packet;
 
 public class S2CAuthenticationStatusPacket implements Packet {
@@ -13,15 +13,15 @@ public class S2CAuthenticationStatusPacket implements Packet {
         this.message = message;
     }
     
-    public S2CAuthenticationStatusPacket(Buffer buffer) {
-        this.success = buffer.getByte(1) == 0;
-        this.message = buffer.getString(2, buffer.length());
+    public S2CAuthenticationStatusPacket(WrappedBuffer buffer) {
+        this.success = buffer.nextByte() == 0;
+        this.message = buffer.nextString();
     }
     
     @Override
-    public void serialize(Buffer buffer) {
-        buffer.appendByte(success ? (byte) 0 : (byte) 1); // 0 = true, 1 = false
-        buffer.appendString(message);
+    public void serialize(WrappedBuffer buffer) {
+        buffer.writeByte(success ? (byte) 0 : (byte) 1); // 0 = true, 1 = false
+        buffer.writeString(message);
     }
     
     public boolean isSuccess() {

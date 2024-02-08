@@ -27,20 +27,13 @@ public class TestingPacket implements Packet {
     }
 
     @Override
-    public void serialize(Buffer buffer) {
+    public void serialize(WrappedBuffer buffer) {
         // append the int to the buffer at the position 0,
-        buffer.appendInt(packetId);
-        
-        // append the first string
-        buffer.appendInt(stringOne.length());
-        buffer.appendString(stringOne);
-        
-        // append the second string
-        buffer.appendInt(stringTwo.length());
-        buffer.appendString(stringTwo);
-        
-        // append the last integer
-        buffer.appendInt(otherInt);
+        buffer
+            .writeInt(packetId)
+            .writeString(stringOne)
+            .writeString(stringTwo)
+            .writeInt(otherInt);
     }
 
     public boolean equals(TestingPacket packet) {

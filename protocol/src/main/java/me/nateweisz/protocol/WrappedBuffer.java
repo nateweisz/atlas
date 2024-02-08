@@ -61,4 +61,42 @@ public class WrappedBuffer {
         currentIndex += stringLength;
         return value;
     }
+
+    // this are made to work in a builder format to improve readability.
+    public WrappedBuffer writeByte(byte value) {
+        buffer.appendByte(value);
+        return this;
+    }
+
+    public WrappedBuffer writeInt(int value) {
+        buffer.appendInt(value);
+        return this;
+    }
+
+    public WrappedBuffer writeLong(long value) {
+        buffer.appendLong(value);
+        return this;
+    }
+
+    public WrappedBuffer writeDouble(double value) {
+        buffer.appendDouble(value);
+        return this;
+    }
+    
+    public WrappedBuffer writeFloat(float value) {
+        buffer.appendFloat(value);
+        return this;
+    }
+    
+    public WrappedBuffer writeShort(short value) {
+        buffer.appendShort(value);
+        return this;
+    }
+    
+    public WrappedBuffer writeString(String value) {
+        int stringLength = value.length();
+        buffer.appendInt(stringLength);
+        buffer.appendString(value);
+        return this;
+    }
 }

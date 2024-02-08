@@ -1,6 +1,6 @@
 package me.nateweisz.protocol.serverbound;
 
-import io.vertx.core.buffer.Buffer;
+import me.nateweisz.protocol.WrappedBuffer;
 import me.nateweisz.protocol.Packet;
 
 import java.time.Instant;
@@ -13,8 +13,8 @@ public class C2SHeartbeatPacket implements Packet {
         this.timestamp = timestamp;
     }
     
-    public C2SHeartbeatPacket(Buffer buffer) {
-        this.timestamp = Instant.ofEpochMilli(buffer.getLong(0));
+    public C2SHeartbeatPacket(WrappedBuffer buffer) {
+        this.timestamp = Instant.ofEpochMilli(buffer.nextLong());
     }
     
     public Instant getTimestamp() {
@@ -22,7 +22,7 @@ public class C2SHeartbeatPacket implements Packet {
     }
 
     @Override
-    public void serialize(Buffer buffer) {
-        buffer.appendLong(timestamp.toEpochMilli());
+    public void serialize(WrappedBuffer buffer) {
+        buffer.writeLong(timestamp.toEpochMilli());
     }
 }
