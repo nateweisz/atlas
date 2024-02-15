@@ -7,6 +7,7 @@
 
 # Ignore IDEA settings (if using IntelliJ IDEA)
 **/.idea/
+**/.fleet/
 
 # Ignore any user-specific files or directories
 **/.DS_Store

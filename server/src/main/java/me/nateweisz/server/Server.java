@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 // TODO: Add options to only accept nodes from certain ips
 public class Server extends AbstractVerticle {
-    
     private static Logger LOGGER;
     private HttpServer httpServer;
     private NodeManager nodeManager;

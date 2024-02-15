@@ -1,4 +1,3 @@
-platforms.html#sub::toml-dependencies-format
 [versions]
 shadow = "7.1.2"
 idea = "1.1.7"
@@ -9,7 +8,7 @@ apache = "1.10.0"
 docker = "3.3.4"
 
 [libraries]
-commons-text = { group = "org.apache.commons", name = "commons-text" version.ref = "apache" }
+commons-text = { group = "org.apache.commons", name = "commons-text", version.ref = "apache" }
 
 vertx-depchain = { group = "io.vertx", name = "vertx-stack-depchain", version.ref = "vertx" }
 vertx-web = { group = "io.vertx", name = "vertx-web", version.ref = "vertx" }
