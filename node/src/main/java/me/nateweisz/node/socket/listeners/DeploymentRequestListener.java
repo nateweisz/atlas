@@ -3,11 +3,10 @@ package me.nateweisz.node.socket.listeners;
 import io.vertx.core.http.ServerWebSocket;
 import me.nateweisz.node.code.ICodeProvider;
 import me.nateweisz.node.code.impl.GitCodeProvider;
+import me.nateweisz.node.docker.BuildSpec;
 import me.nateweisz.node.docker.DockerManager;
 import me.nateweisz.protocol.clientbound.S2CRequestDeploymentPacket;
 import me.nateweisz.protocol.eventbus.PacketListener;
-
-import java.io.IOException;
 
 public class DeploymentRequestListener implements PacketListener<S2CRequestDeploymentPacket> {
     private final DockerManager dockerManager;
@@ -31,8 +30,11 @@ public class DeploymentRequestListener implements PacketListener<S2CRequestDeplo
         
         if (!codeProvider.validateRepository(packet.getPath())) {
             System.out.println("Repo was found invalid: " + packet.getPath());
-        } else {
-            System.out.println("Repo was found valid: " + packet.getPath());
+            return;
         }
+
+        System.out.println("Repo was found valid: " + packet.getPath());
+        BuildSpec build = new BuildSpec(packet.getPath(), /* TODO: Unhardcode this but for now it will be like this!! */ "Astro");
+        dockerManager.queueBuild(build);
     }
 }

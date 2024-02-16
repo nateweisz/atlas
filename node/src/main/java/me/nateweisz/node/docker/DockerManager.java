@@ -10,8 +10,8 @@ import me.nateweisz.node.code.ICodeProvider;
 import me.nateweisz.node.code.impl.GitCodeProvider;
 import me.nateweisz.node.registry.IDockerRegistry;
 
+import java.io.File;
 import java.time.Duration;
-import java.util.Set;
 
 public class DockerManager {
     private final DockerClient client;
@@ -33,6 +33,19 @@ public class DockerManager {
         client = DockerClientImpl.getInstance(clientConfig, httpClient);
         gitProvider = new GitCodeProvider();
         // I will prob need to pass in a github access token and figure out how to access the code when we get to this.
+    }
+
+    public void queueBuild(BuildSpec build) {
+        
+
+    }
+
+    private File getDockerFilePerType(String type) {
+        return new File(
+                DockerManager.class.getClassLoader()
+                    .getResource("/dockerfiles/frontend/" + type)
+                    .getFile()
+        );
     }
 
     public DockerClient getClient() {

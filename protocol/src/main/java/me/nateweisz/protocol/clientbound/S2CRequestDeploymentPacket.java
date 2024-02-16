@@ -7,7 +7,7 @@ import java.security.PublicKey;
 import java.util.UUID;
 
 public class S2CRequestDeploymentPacket implements Packet {
-    private final UUID deploymentId; // used for the callback when it is deployed.
+    private final UUID deploymentId; // used for the callback when it is deployed and all other future sent packets.
     private final String codeProvider; // prob only `git` for now
     private final String path; // the path (ex. nateweisz/atlas) likely only git support for now.
     private final String commitHash; // TODO: in the future this should likely be a metadata tag when we support non git stuff.

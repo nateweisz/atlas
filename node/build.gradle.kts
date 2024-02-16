@@ -48,3 +48,14 @@ tasks.withType<JavaExec> {
 application {
     mainClass = launcherClassName
 }
+
+// Define the task to copy Dockerfiles into resources
+val copyDockerfiles by tasks.registering(Copy::class) {
+    from("../dockerfiles") // Source directory
+    into("src/main/resources/dockerfiles") // Destination directory within the node project
+}
+
+// Ensure that the copyDockerfiles task runs before the processResources task
+tasks.named("processResources") {
+    dependsOn(copyDockerfiles)
+}
