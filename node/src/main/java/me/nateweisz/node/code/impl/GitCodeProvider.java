@@ -25,7 +25,7 @@ public class GitCodeProvider implements ICodeProvider {
             return null;
         }
         
-        return "github_" + split[0] + "_" + split[1];
+        return "github_" + split[0] + "_" + split[1] + ":latest";
     }
 
     @Override
