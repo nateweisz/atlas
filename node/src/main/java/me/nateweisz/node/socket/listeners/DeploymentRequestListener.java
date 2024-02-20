@@ -34,6 +34,8 @@ public class DeploymentRequestListener implements PacketListener<S2CRequestDeplo
         }
 
         System.out.println("Repo was found valid: " + packet.getPath());
+        // TODO: before I queue build clone it into a directory
+
         BuildSpec build = new BuildSpec(packet.getPath(), /* TODO: Unhardcode this but for now it will be like this!! */ "Astro");
         dockerManager.queueBuild(build);
     }
