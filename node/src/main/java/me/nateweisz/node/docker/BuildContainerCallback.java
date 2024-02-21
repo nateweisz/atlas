@@ -37,7 +37,7 @@ public class BuildContainerCallback extends Thread {
             dockerManager.getClient().removeContainerCmd(container.getId())
                     .exec();
             
-            dockerManager.
+            dockerManager.onBuildComplete(container.getId());
         }
     }
 }
