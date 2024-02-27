@@ -68,13 +68,14 @@ public class DockerManager {
         // 3. Throw the Dockerfile from dockerfiles/frontend/Astro into the base of the repo
 
         CreateContainerResponse container = client.createContainerCmd("base-atlas:latest")
-                .withCmd("cd /opt/atlas/volumes/" + build.getPath() + " && ")
+                .withCmd("cd /opt/atlas/volumes/" + build.getPath() + " && docker build -t .")
                 .withLabels(
                         Map.of("atlas-type", "build")
                 )
                 .withVolumes(
                         new Volume("/opt/atlas/volumes/" + build.getPath())
                 )
+                .withBinds()
                 .withHostConfig(
                         HostConfig.newHostConfig()
                         // TODO: limit memory usage here (not sure what the memory type is, Ex. mb or bytes ect
