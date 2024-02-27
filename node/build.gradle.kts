@@ -25,7 +25,8 @@ dependencies {
     implementation("com.github.docker-java:docker-java-transport-httpclient5:3.3.4")
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.8.0.202311291450-r")
     testImplementation("io.vertx:vertx-junit5")
-    testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")}
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
+}
 
 tasks.withType<ShadowJar> {
     archiveClassifier.set("fat")
@@ -43,7 +44,13 @@ tasks.withType<Test> {
 }
 
 tasks.withType<JavaExec> {
-    args = listOf("run", mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$launcherClassName", "--on-redeploy=$doOnChange")
+    args = listOf(
+        "run",
+        mainVerticleName,
+        "--redeploy=$watchForChange",
+        "--launcher-class=$launcherClassName",
+        "--on-redeploy=$doOnChange"
+    )
 }
 
 application {

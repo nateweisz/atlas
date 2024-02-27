@@ -1,8 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestLogEvent.*
-import org.jetbrains.gradle.ext.Gradle
-import org.jetbrains.gradle.ext.runConfigurations
-import org.jetbrains.gradle.ext.settings
 
 
 plugins {
@@ -27,7 +24,8 @@ dependencies {
     implementation("io.vertx:vertx-web")
     implementation("io.vertx:vertx-json-schema")
     testImplementation("io.vertx:vertx-junit5")
-    testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")}
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
+}
 
 tasks.withType<ShadowJar> {
     archiveClassifier.set("fat")
@@ -45,7 +43,13 @@ tasks.withType<Test> {
 }
 
 tasks.withType<JavaExec> {
-    args = listOf("run", mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$launcherClassName", "--on-redeploy=$doOnChange")
+    args = listOf(
+        "run",
+        mainVerticleName,
+        "--redeploy=$watchForChange",
+        "--launcher-class=$launcherClassName",
+        "--on-redeploy=$doOnChange"
+    )
 }
 
 application {

@@ -10,11 +10,11 @@ import me.nateweisz.protocol.eventbus.PacketListener;
 
 public class DeploymentRequestListener implements PacketListener<S2CRequestDeploymentPacket> {
     private final DockerManager dockerManager;
-    
+
     public DeploymentRequestListener(DockerManager dockerManager) {
         this.dockerManager = dockerManager;
     }
-    
+
     @Override
     public Class<S2CRequestDeploymentPacket> getPacketType() {
         return S2CRequestDeploymentPacket.class;
@@ -27,7 +27,7 @@ public class DeploymentRequestListener implements PacketListener<S2CRequestDeplo
             case "git" -> new GitCodeProvider();
             default -> throw new IllegalStateException("Unexpected value: " + packet.getCodeProvider());
         };
-        
+
         if (!codeProvider.validateRepository(packet.getPath())) {
             System.out.println("Repo was found invalid: " + packet.getPath());
             return;

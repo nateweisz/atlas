@@ -1,10 +1,11 @@
 package me.nateweisz.server.node;
 
 import io.vertx.core.http.ServerWebSocket;
-import me.nateweisz.protocol.eventbus.*;
-import me.nateweisz.server.Server;  
-import me.nateweisz.server.node.expiry.NodeExpiryThread;
+import me.nateweisz.protocol.eventbus.EventDispatcher;
+import me.nateweisz.protocol.eventbus.PacketListener;
+import me.nateweisz.server.Server;
 import me.nateweisz.server.node.expiry.HeartbeatListener;
+import me.nateweisz.server.node.expiry.NodeExpiryThread;
 import me.nateweisz.server.node.state.ClientState;
 
 import java.util.HashMap;
@@ -18,13 +19,13 @@ public class NodeManager {
         NodeExpiryThread nodeExpiryThread = new NodeExpiryThread(this);
         this.connections = new HashMap<>();
         this.packetEventDispatcher = new EventDispatcher();
-        
+
         server.getHttpServer().webSocketHandler(new NodeWebsocket(this, secret));
         nodeExpiryThread.start();
 
         registerListeners();
     }
-    
+
     public void removeClient(ClientState clientState) {
         // TODO: remove client from connections and handle any cleanup / logging we need to do
         for (int i = 0; i < connections.size(); i++) {

@@ -13,16 +13,17 @@ import me.nateweisz.node.socket.ServerWebsocket;
 public class Node extends AbstractVerticle {
     private final DockerManager dockerManager;
     private final String secret;
-    
+
+    public Node() {
+        this.secret = "secretTEST123";
+        this.dockerManager = new DockerManager(new IDockerRegistry() {
+        });
+    }
+
     public static void main(String[] args) {
         // Start the verticle deployment manually
         Vertx vertx = Vertx.vertx();
         vertx.deployVerticle(new Node());
-    }
-    
-    public Node() {
-        this.secret = "secretTEST123";
-        this.dockerManager = new DockerManager(new IDockerRegistry() {});
     }
 
     @Override
@@ -33,7 +34,7 @@ public class Node extends AbstractVerticle {
     private void init() {
         HttpClientOptions options = new HttpClientOptions().setSsl(false);
         HttpClient client = vertx.createHttpClient(options);
-        
+
         client.webSocket(8080, "localhost", "/", new ServerWebsocket(this));
     }
 

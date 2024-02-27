@@ -1,7 +1,6 @@
 package me.nateweisz.protocol;
 
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.http.WebSocketBase;
 import me.nateweisz.protocol.clientbound.S2CAuthenticationStatusPacket;
 import me.nateweisz.protocol.clientbound.S2CRequestDeploymentPacket;
@@ -18,7 +17,7 @@ public class Protocol {
             (byte) 0x01, C2SHeartbeatPacket.class,
             (byte) 0x02, C2SDeploymentStatusPacket.class
     );
-    
+
     public static final Map<Byte, Class<? extends Packet>> CLIENT_BOUND = Map.of(
             (byte) 0x00, S2CAuthenticationStatusPacket.class,
             (byte) 0x01, S2CRequestDeploymentPacket.class

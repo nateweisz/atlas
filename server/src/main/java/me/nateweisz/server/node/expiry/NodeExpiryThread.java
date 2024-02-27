@@ -5,12 +5,12 @@ import me.nateweisz.server.node.state.ClientState;
 
 public class NodeExpiryThread extends Thread {
     private final NodeManager nodeManager;
-    
+
     public NodeExpiryThread(NodeManager nodeManager) {
         super("Node Expiry Thread");
         this.nodeManager = nodeManager;
     }
-    
+
     @Override
     public void run() {
         while (true) {
@@ -19,7 +19,7 @@ public class NodeExpiryThread extends Thread {
                     nodeManager.removeClient(clientState);
                 }
             }
-            
+
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

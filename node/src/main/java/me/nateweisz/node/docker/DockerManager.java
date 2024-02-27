@@ -1,9 +1,7 @@
 package me.nateweisz.node.docker;
 
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.command.CreateContainerResponse;
-import com.github.dockerjava.api.model.BuildResponseItem;
 import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.Volume;
@@ -16,16 +14,12 @@ import me.nateweisz.node.code.ICodeProvider;
 import me.nateweisz.node.code.impl.GitCodeProvider;
 import me.nateweisz.node.registry.IDockerRegistry;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.Repository;
 
-import java.io.Closeable;
 import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 public class DockerManager {
     private final File BUILD_DIR = new File("/opt/atlas/builds/");
@@ -33,12 +27,12 @@ public class DockerManager {
     private final DockerClient client;
     private final ICodeProvider gitProvider;
     private final HashMap<String, BuildSpec> specs;
-    
+
     public DockerManager(IDockerRegistry registry) {
         DockerClientConfig clientConfig = DefaultDockerClientConfig.createDefaultConfigBuilder()
                 .withDockerHost("unix:///var/run/docker.sock")
                 .build();
-        
+
         DockerHttpClient httpClient = new ApacheDockerHttpClient.Builder()
                 .dockerHost(clientConfig.getDockerHost())
                 .sslConfig(clientConfig.getSSLConfig())
@@ -46,7 +40,7 @@ public class DockerManager {
                 .connectionTimeout(Duration.ofSeconds(30))
                 .responseTimeout(Duration.ofSeconds(45))
                 .build();
-        
+
         client = DockerClientImpl.getInstance(clientConfig, httpClient);
         gitProvider = new GitCodeProvider();
         specs = new HashMap<>();
@@ -61,10 +55,10 @@ public class DockerManager {
 
         try {
             Git
-            .cloneRepository()
-            .setURI("https://github.com/" + build.getPath())
-            .setDirectory(new File("/opt/atlas/volumes/" + build.getPath()))
-            .call();
+                    .cloneRepository()
+                    .setURI("https://github.com/" + build.getPath())
+                    .setDirectory(new File("/opt/atlas/volumes/" + build.getPath()))
+                    .call();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,19 +66,19 @@ public class DockerManager {
         // 1. Clone repo
         // 2. Delete any existing Dockerfile
         // 3. Throw the Dockerfile from dockerfiles/frontend/Astro into the base of the repo
-        
+
         CreateContainerResponse container = client.createContainerCmd("base-atlas:latest")
                 .withCmd("cd /opt/atlas/volumes/" + build.getPath() + " && ")
                 .withLabels(
                         Map.of("atlas-type", "build")
-        )
+                )
                 .withVolumes(
                         new Volume("/opt/atlas/volumes/" + build.getPath())
-        )
+                )
                 .withHostConfig(
                         HostConfig.newHostConfig()
                         // TODO: limit memory usage here (not sure what the memory type is, Ex. mb or bytes ect
-        )
+                )
                 .exec();
 
         client.startContainerCmd(container.getId())
@@ -116,8 +110,8 @@ public class DockerManager {
     private File getDockerFilePerType(String type) {
         return new File(
                 DockerManager.class.getClassLoader()
-                    .getResource("/dockerfiles/frontend/" + type)
-                    .getFile()
+                        .getResource("/dockerfiles/frontend/" + type)
+                        .getFile()
         );
     }
 

@@ -1,10 +1,8 @@
 package me.nateweisz.protocol.eventbus;
 
 import io.vertx.core.http.ServerWebSocket;
-import io.vertx.core.http.WebSocketClient;
 import me.nateweisz.protocol.Packet;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -37,7 +35,7 @@ public class EventDispatcher {
 
         logger.info("Dispatched " + packet.getClass().getName() + " in " + (System.currentTimeMillis() - startTime) + "ms.");
     }
-    
+
     public void registerListener(PacketListener<?> listener) {
         Class<? extends Packet> packetType = listener.getPacketType();
 

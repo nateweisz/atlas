@@ -1,16 +1,16 @@
 package me.nateweisz.server.eventbus;
 
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
-import me.nateweisz.protocol.eventbus.EventDispatcher;
 import me.nateweisz.protocol.Packet;
 import me.nateweisz.protocol.WrappedBuffer;
+import me.nateweisz.protocol.eventbus.EventDispatcher;
 import me.nateweisz.protocol.eventbus.PacketListener;
 import org.junit.jupiter.api.Test;
 
 public class EventDispatcherTest {
 
-    @Test public void testEventBus() {
+    @Test
+    public void testEventBus() {
         EventDispatcher ed = new EventDispatcher();
         ed.registerListener(new TestListener(-1));
 
@@ -45,7 +45,7 @@ public class EventDispatcherTest {
 
     static class TestPacket implements Packet {
         private int value;
-        
+
         public TestPacket(int value) {
             this.value = value;
         }

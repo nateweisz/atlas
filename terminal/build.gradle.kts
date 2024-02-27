@@ -1,3 +1,3 @@
 plugins {
-	id("me.nateweisz.atlas-conventions")
+    id("me.nateweisz.atlas-conventions")
 }

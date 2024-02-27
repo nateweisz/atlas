@@ -5,7 +5,6 @@ import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import me.nateweisz.server.node.NodeManager;
-import me.nateweisz.server.node.NodeWebsocket;
 
 import java.util.logging.Logger;
 
@@ -14,7 +13,7 @@ public class Server extends AbstractVerticle {
     private static Logger LOGGER;
     private HttpServer httpServer;
     private NodeManager nodeManager;
-    
+
     public static void main(String[] args) {
         // Start the verticle deployment manually
         Vertx vertx = Vertx.vertx();
@@ -24,17 +23,17 @@ public class Server extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) {
         LOGGER = Logger.getLogger(Server.class.getName());
-        
+
         LOGGER.info("Setting up the HTTP server!");
         setupHttpServer(startPromise);
     }
-    
+
     private void setupHttpServer(Promise<Void> startPromise) {
         String secret = "secretTEST123";
         httpServer = vertx.createHttpServer();
-        
+
         nodeManager = new NodeManager(this, secret);
-        
+
         httpServer.listen(8080, http -> {
             if (http.succeeded()) {
                 startPromise.complete();
@@ -45,7 +44,7 @@ public class Server extends AbstractVerticle {
             }
         });
     }
-    
+
     public HttpServer getHttpServer() {
         return httpServer;
     }
