@@ -75,7 +75,6 @@ public class DockerManager {
                 .withVolumes(
                         new Volume("/opt/atlas/volumes/" + build.getPath())
                 )
-                .withBinds()
                 .withHostConfig(
                         HostConfig.newHostConfig()
                         // TODO: limit memory usage here (not sure what the memory type is, Ex. mb or bytes ect
