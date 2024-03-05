@@ -3,7 +3,7 @@ shadow = "7.1.2"
 idea = "1.1.7"
 
 vertx = "4.5.2"
-junit = "5.9.1"
+junit = "5.10.2"
 apache = "1.10.0"
 docker = "3.3.4"
 

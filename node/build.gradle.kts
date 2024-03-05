@@ -7,7 +7,7 @@ plugins {
 }
 
 val vertxVersion = "4.5.2"
-val junitJupiterVersion = "5.9.1"
+val junitJupiterVersion = "5.10.2"
 
 val mainVerticleName = "me.nateweisz.node.Node"
 val launcherClassName = "io.vertx.core.Launcher"
