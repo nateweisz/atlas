@@ -21,7 +21,8 @@ public class EventDispatcher {
         ArrayList<PacketListener<?>> listeners = this.listeners.get(packet.getClass());
 
         // incase there is not registered listeners
-        if (listeners == null) return;
+        if (listeners == null)
+            return;
 
         long startTime = System.currentTimeMillis();
 
@@ -33,7 +34,8 @@ public class EventDispatcher {
             }
         }
 
-        logger.info("Dispatched " + packet.getClass().getName() + " in " + (System.currentTimeMillis() - startTime) + "ms.");
+        logger.info("Dispatched " + packet.getClass().getName() + " in "
+                + (System.currentTimeMillis() - startTime) + "ms.");
     }
 
     public void registerListener(PacketListener<?> listener) {

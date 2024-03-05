@@ -21,7 +21,8 @@ public class EventDispatcherTest {
 
         ed.registerListener(new TestListener(100));
         ed.dispatchEvent(packet, null);
-        // the value of TestPacket should now be 100 since that is the last listener of that type to be
+        // the value of TestPacket should now be 100 since that is the last listener of that type to
+        // be
         // invoked.
         assert packet.getValue() == 100;
     }

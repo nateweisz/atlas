@@ -11,6 +11,7 @@ import me.nateweisz.protocol.Packet;
 public interface PacketListener<T extends Packet> {
     Class<T> getPacketType();
 
-    // listeners on the node should never touch  the serverWebSocket since it will be passed in as null there.
+    // listeners on the node should never touch the serverWebSocket since it will be passed in as
+    // null there.
     void handle(T packet, ServerWebSocket serverWebSocket);
 }

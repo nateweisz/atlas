@@ -11,7 +11,8 @@ public class BufferTests {
         packet.serialize(new WrappedBuffer(buffer));
         TestingPacket deserialized = new TestingPacket(new WrappedBuffer(buffer));
 
-        System.out.printf("%s, %s, %s, %s", deserialized.getPacketId(), deserialized.getStringOne(), deserialized.getStringTwo(), deserialized.getOtherInt());
+        System.out.printf("%s, %s, %s, %s", deserialized.getPacketId(), deserialized.getStringOne(),
+                deserialized.getStringTwo(), deserialized.getOtherInt());
 
         assert deserialized.equals(packet);
     }

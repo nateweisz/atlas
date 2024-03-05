@@ -24,18 +24,20 @@ public class BuildContainerCallback extends Thread {
     }
 
     private void tick() {
-        List<Container> containers = dockerManager.getClient().listContainersCmd()
-                .withExitedFilter(0) // 0 means the container has finished
-                .exec();
+        List<Container> containers = dockerManager.getClient()
+            .listContainersCmd()
+            .withExitedFilter(0) // 0 means the container has finished
+            .exec();
 
         for (Container container : containers) {
             String label = container.getLabels().get("atlas-type");
 
-            if (label == null) continue;
-            if (!label.equals("build")) continue;
+            if (label == null)
+                continue;
+            if (!label.equals("build"))
+                continue;
 
-            dockerManager.getClient().removeContainerCmd(container.getId())
-                    .exec();
+            dockerManager.getClient().removeContainerCmd(container.getId()).exec();
 
             dockerManager.onBuildComplete(container.getId());
         }

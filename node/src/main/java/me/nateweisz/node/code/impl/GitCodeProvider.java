@@ -30,8 +30,8 @@ public class GitCodeProvider implements ICodeProvider {
     @Override
     public boolean validateRepository(String path) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.github.com/repos/" + path))
-                .build();
+            .uri(URI.create("https://api.github.com/repos/" + path))
+            .build();
 
         HttpResponse<String> response = null;
         try {

@@ -95,17 +95,24 @@ public class NodeWebsocket implements Handler<ServerWebSocket> {
 
             if (packet instanceof C2SAuthenticatePacket) {
                 if (!((C2SAuthenticatePacket) packet).getSecret().equals(secret)) {
-                    logger.log(Level.SEVERE, "Invalid secret provided: " + ((C2SAuthenticatePacket) packet).getSecret() + " != " + secret);
-                    sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(false, "Invalid secret"), serverWebSocket);
+                    logger.log(Level.SEVERE, "Invalid secret provided: "
+                            + ((C2SAuthenticatePacket) packet).getSecret() + " != " + secret);
+                    sendPacket((byte) 0x00,
+                            new S2CAuthenticationStatusPacket(false, "Invalid secret"),
+                            serverWebSocket);
                     serverWebSocket.close();
                     return;
                 }
 
                 clientState.setAuthenticated();
-                sendPacket((byte) 0x00, new S2CAuthenticationStatusPacket(true, "Authentication successful"), serverWebSocket);
+                sendPacket((byte) 0x00,
+                        new S2CAuthenticationStatusPacket(true, "Authentication successful"),
+                        serverWebSocket);
 
-                sendPacket((byte) 0x01, new S2CRequestDeploymentPacket(UUID.randomUUID(), "git", "nateweisz/atlas", "N/A"), serverWebSocket);
-                sendPacket((byte) 0x01, new S2CRequestDeploymentPacket(UUID.randomUUID(), "git", "nateweisz/test", "N/A"), serverWebSocket);
+                sendPacket((byte) 0x01, new S2CRequestDeploymentPacket(UUID.randomUUID(), "git",
+                        "nateweisz/atlas", "N/A"), serverWebSocket);
+                sendPacket((byte) 0x01, new S2CRequestDeploymentPacket(UUID.randomUUID(), "git",
+                        "nateweisz/test", "N/A"), serverWebSocket);
             }
         }
 

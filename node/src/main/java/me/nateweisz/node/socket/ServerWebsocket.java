@@ -57,7 +57,8 @@ public class ServerWebsocket implements Handler<AsyncResult<WebSocket>> {
             if (statusPacket.isSuccess()) {
                 System.out.println("Successfully authenticated with server.");
             } else {
-                System.out.println("Failed to authenticate with server: " + statusPacket.getMessage());
+                System.out
+                    .println("Failed to authenticate with server: " + statusPacket.getMessage());
                 return;
             }
         }

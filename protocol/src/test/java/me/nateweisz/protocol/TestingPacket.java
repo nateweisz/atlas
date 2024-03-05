@@ -25,15 +25,12 @@ public class TestingPacket implements Packet {
     @Override
     public void serialize(WrappedBuffer buffer) {
         // append the int to the buffer at the position 0,
-        buffer
-                .writeInt(packetId)
-                .writeString(stringOne)
-                .writeString(stringTwo)
-                .writeInt(otherInt);
+        buffer.writeInt(packetId).writeString(stringOne).writeString(stringTwo).writeInt(otherInt);
     }
 
     public boolean equals(TestingPacket packet) {
-        return packet.getPacketId() == packetId && packet.getStringOne().equals(stringOne) && packet.getStringTwo().equals(stringTwo) && packet.getOtherInt() == otherInt;
+        return packet.getPacketId() == packetId && packet.getStringOne().equals(stringOne)
+                && packet.getStringTwo().equals(stringTwo) && packet.getOtherInt() == otherInt;
     }
 
     public int getPacketId() {
@@ -54,10 +51,14 @@ public class TestingPacket implements Packet {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         TestingPacket that = (TestingPacket) o;
-        return packetId == that.packetId && otherInt == that.otherInt && Objects.equals(stringOne, that.stringOne) && Objects.equals(stringTwo, that.stringTwo);
+        return packetId == that.packetId && otherInt == that.otherInt
+                && Objects.equals(stringOne, that.stringOne)
+                && Objects.equals(stringTwo, that.stringTwo);
     }
 
     @Override
