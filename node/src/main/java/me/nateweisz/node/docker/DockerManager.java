@@ -50,16 +50,12 @@ public class DockerManager {
     }
 
     public void queueBuild(BuildSpec build) {
-        // 1. Clone it locally and add it as a volume
-        // 2. Clone it while inside of docker container (for this I will just make it work w/ public
-        // repo's for now)
-        // Cloning it inside docker container's is not possible because we use a docker in docker
-        // image
+        File clonedDir = new File("/opt/atlas/volumes/" + build.getPath());
 
         try {
             Git.cloneRepository()
                 .setURI("https://github.com/" + build.getPath())
-                .setDirectory(new File("/opt/atlas/volumes/" + build.getPath()))
+                .setDirectory(clonedDir)
                 .call();
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,7 +66,7 @@ public class DockerManager {
         // 3. Throw the Dockerfile from dockerfiles/frontend/Astro into the base of the repo
 
         CreateContainerResponse container = client.createContainerCmd("base-atlas:latest")
-            .withCmd("cd /opt/atlas/volumes/" + build.getPath() + " && docker build -t .")
+            .withCmd("cd /opt/atlas/volumes/" + build.getPath() + " && docker build -t " + build.getPath().replace("/", "-") + ":latest .")
             .withLabels(Map.of("atlas-type", "build"))
             .withVolumes(new Volume("/opt/atlas/volumes/" + build.getPath()))
             .withHostConfig(HostConfig.newHostConfig()
@@ -78,6 +74,7 @@ public class DockerManager {
             )
             .exec();
 
+        // start the docker-in-docker container that the build will be executed inside of. * cleaned up by `DockerContainerCallback`
         client.startContainerCmd(container.getId()).exec();
     }
 
