@@ -10,6 +10,9 @@ repositories {
 subprojects {
     apply(plugin = "com.diffplug.spotless")
 
+    this.group = "me.nateweisz"
+    this.version = file("${rootProject.rootDir}/atlas.version").readText()
+
     spotless {
         java {
             endWithNewline()
