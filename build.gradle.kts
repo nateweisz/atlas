@@ -14,6 +14,7 @@ subprojects {
         java {
             endWithNewline()
             removeUnusedImports()
+            formatAnnotations()
             eclipse("4.19").configFile("${rootProject.rootDir}/meta/formatting/google-style-eclipse.xml")
             // stolen config from tj bot :))
         }
