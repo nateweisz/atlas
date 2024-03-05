@@ -7,7 +7,8 @@ import java.util.Scanner;
 public class Terminal {
     private final String prompt;
     private final InputStream inputStream;
-    private final PrintStream printStream; // you can create a custom PrintStream to go somewhere else
+    private final PrintStream printStream; // you can create a custom PrintStream to go somewhere
+                                           // else
 
     /**
      * @param prompt The prompt that will be displayed on each new line. (Ex. "server>")
@@ -37,7 +38,8 @@ public class Terminal {
     }
 
     /**
-     * Calling this will block the current thread so make sure you are polling from a seperate thread.
+     * Calling this will block the current thread so make sure you are polling from a seperate
+     * thread.
      */
     public void poll() {
         // start a new thread and poll for a string input.
@@ -49,7 +51,8 @@ public class Terminal {
             String command = input.nextLine(); // blocks the thread until an input is entered.
 
             // ignore empty inputs
-            if (command.isEmpty()) continue;
+            if (command.isEmpty())
+                continue;
 
             try {
                 if (command.equals("test-exception")) {

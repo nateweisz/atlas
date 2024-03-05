@@ -12,16 +12,12 @@ import java.util.Map;
 
 public class Protocol {
 
-    public static final Map<Byte, Class<? extends Packet>> SERVER_BOUND = Map.of(
-            (byte) 0x00, C2SAuthenticatePacket.class,
-            (byte) 0x01, C2SHeartbeatPacket.class,
-            (byte) 0x02, C2SDeploymentStatusPacket.class
-    );
+    public static final Map<Byte, Class<? extends Packet>> SERVER_BOUND =
+            Map.of((byte) 0x00, C2SAuthenticatePacket.class, (byte) 0x01, C2SHeartbeatPacket.class,
+                    (byte) 0x02, C2SDeploymentStatusPacket.class);
 
-    public static final Map<Byte, Class<? extends Packet>> CLIENT_BOUND = Map.of(
-            (byte) 0x00, S2CAuthenticationStatusPacket.class,
-            (byte) 0x01, S2CRequestDeploymentPacket.class
-    );
+    public static final Map<Byte, Class<? extends Packet>> CLIENT_BOUND = Map.of((byte) 0x00,
+            S2CAuthenticationStatusPacket.class, (byte) 0x01, S2CRequestDeploymentPacket.class);
 
     public static void sendPacket(byte id, Packet packet, WebSocketBase socket) {
         Buffer buffer = Buffer.buffer();
@@ -30,10 +26,14 @@ public class Protocol {
         socket.writeBinaryMessage(buffer);
     }
 
-    public static <T extends Packet> T getPacket(Map<Byte, Class<? extends Packet>> packets, byte id, Buffer buffer) {
-        buffer = buffer.getBuffer(1, buffer.length()); // get a new buffer without the packet id in it.         
+    public static <T extends Packet> T getPacket(Map<Byte, Class<? extends Packet>> packets,
+            byte id, Buffer buffer) {
+        buffer = buffer.getBuffer(1, buffer.length()); // get a new buffer without the packet id in
+                                                       // it.
         try {
-            return (T) packets.get(id).getConstructor(WrappedBuffer.class).newInstance(new WrappedBuffer(buffer));
+            return (T) packets.get(id)
+                .getConstructor(WrappedBuffer.class)
+                .newInstance(new WrappedBuffer(buffer));
         } catch (Exception e) {
             e.printStackTrace();
             return null;

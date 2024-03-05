@@ -16,8 +16,7 @@ public class Node extends AbstractVerticle {
 
     public Node() {
         this.secret = "secretTEST123";
-        this.dockerManager = new DockerManager(new IDockerRegistry() {
-        });
+        this.dockerManager = new DockerManager(new IDockerRegistry() {});
     }
 
     public static void main(String[] args) {
