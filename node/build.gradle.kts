@@ -23,7 +23,7 @@ dependencies {
     implementation("io.vertx:vertx-json-schema")
     implementation("com.github.docker-java:docker-java:3.3.4")
     implementation("com.github.docker-java:docker-java-transport-httpclient5:3.3.6")
-    implementation("org.eclipse.jgit:org.eclipse.jgit:6.8.0.202311291450-r")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:6.9.0.202403050737-r")
     testImplementation("io.vertx:vertx-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
 }
