@@ -8,7 +8,7 @@ plugins {
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
 }
 
-val vertxVersion = "4.5.4"
+val vertxVersion = "4.5.5"
 val junitJupiterVersion = "5.10.2"
 
 val mainVerticleName = "me.nateweisz.server.Server"

@@ -6,7 +6,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-val vertxVersion = "4.5.4"
+val vertxVersion = "4.5.5"
 val junitJupiterVersion = "5.10.2"
 
 val mainVerticleName = "me.nateweisz.node.Node"
