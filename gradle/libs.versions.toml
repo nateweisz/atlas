@@ -1,6 +1,6 @@
 [versions]
 shadow = "8.1.1"
-idea = "1.1.7"
+idea = "1.1.8"
 
 vertx = "4.5.2"
 junit = "5.10.2"

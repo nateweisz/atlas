@@ -5,7 +5,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 plugins {
     id("me.nateweisz.atlas-conventions")
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.8"
 }
 
 val vertxVersion = "4.5.4"
