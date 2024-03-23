@@ -11,18 +11,17 @@ plugins {
 val vertxVersion = "4.5.5"
 val junitJupiterVersion = "5.10.2"
 
-val mainVerticleName = "me.nateweisz.server.Server"
+val mainVerticleName = "me.nateweisz.server.Main"
 val launcherClassName = "io.vertx.core.Launcher"
 
 val watchForChange = "src/**/*"
 val doOnChange = "${projectDir}/gradlew classes"
 
 dependencies {
-    implementation(project(":protocol"))
-    implementation("org.apache.commons:commons-text")
     implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
     implementation("io.vertx:vertx-web")
     implementation("io.vertx:vertx-json-schema")
+    implementation("io.vertx:vertx-auth-jwt")
     testImplementation("io.vertx:vertx-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
 }
