@@ -1,57 +1,33 @@
-package me.nateweisz.server.http.auth;
+package me.nateweisz.server.auth;
 
-import io.vertx.core.Vertx;
-import io.vertx.ext.auth.KeyStoreOptions;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
 import io.vertx.ext.auth.PubSecKeyOptions;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.auth.jwt.JWTAuthOptions;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.JWTAuthHandler;
-import me.nateweisz.server.Endpoints;
 
-public class AuthController {
-    private final Vertx vertx;
-    private final JWTAuth jwt;
+public class AuthVerticle extends AbstractVerticle {
+    private final Router router;
+    private JWTAuth jwt;
 
-    public AuthController(Vertx vertx, Router router) {
-        JWTAuth jwt1;
-        this.vertx = vertx;
-        jwt1 = null;
-
-        try {
-            jwt1 = configureAuth();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        jwt = jwt1;
-        router.routeWithRegex("/api/*").handler(JWTAuthHandler.create(jwt));
-        router.post(Endpoints.LOGIN).handler(this::handleLogin);
-        router.post(Endpoints.LOGOUT).handler(this::handleLogout);
-        router.post(Endpoints.REFRESH_TOKEN).handler(this::handleRefresh);
-
-        System.out.println("STARGIGN AUTH");
+    public AuthVerticle(Router router) {
+        this.router = router;
     }
 
-    public record LoginRequest(String email, String password) {}
+    @Override
+    public void start(Promise<Void> startPromise) {
+        jwt = configureAuth();
+        System.out.println("finished doing auth verticle");
+        //router.routeWithRegex("/api/*").handler(JWTAuthHandler.create(jwt));
 
-    private void handleLogin(RoutingContext ctx) {
-        ctx.response().putHeader("Content-Type", "text/plain");
-
-        LoginRequest request = ctx.body().asPojo(LoginRequest.class);
-        if (ctx.body().isEmpty() || request.email == null || request.password == null) {
-            ctx.failed();
-            return;
-        }
-    }
-
-    private void handleLogout(RoutingContext ctx) {
-
-    }
-
-    private void handleRefresh(RoutingContext ctx) {
-
+        // TODO: convert thsese to ffunction invocations
+        vertx.eventBus()
+                .consumer("auth.login")
+                .handler(handler -> {
+                    handler.reply("key goes here !!");
+                });
     }
 
     private JWTAuth configureAuth() {

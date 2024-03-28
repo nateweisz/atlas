@@ -22,6 +22,8 @@ dependencies {
     implementation("io.vertx:vertx-web")
     implementation("io.vertx:vertx-json-schema")
     implementation("io.vertx:vertx-auth-jwt")
+    implementation("io.vertx:vertx-web-validation")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
     testImplementation("io.vertx:vertx-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
 }

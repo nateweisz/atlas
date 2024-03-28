@@ -4,7 +4,9 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
-import me.nateweisz.server.http.auth.AuthController;
+import io.vertx.ext.web.validation.BadRequestException;
+import io.vertx.json.schema.SchemaParser;
+import me.nateweisz.server.auth.AuthController;
 
 public class HttpVerticle extends AbstractVerticle {
     private HttpServer server;
@@ -14,8 +16,6 @@ public class HttpVerticle extends AbstractVerticle {
         // this is the router that will be passed into all the different controllers.
         Router router = Router.router(vertx);
         new AuthController(vertx, router);
-
-        System.out.println("STATING HTTP");
 
         server = vertx.createHttpServer()
                 .requestHandler(router)

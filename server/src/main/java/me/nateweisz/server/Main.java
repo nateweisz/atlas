@@ -1,8 +1,7 @@
 package me.nateweisz.server;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
+import me.nateweisz.server.auth.AuthVerticle;
 import me.nateweisz.server.http.HttpVerticle;
 
 public class Main {
