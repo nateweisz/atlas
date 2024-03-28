@@ -17,6 +17,7 @@ public class HttpVerticle extends AbstractVerticle {
         Router router = Router.router(vertx);
         new AuthController(vertx, router);
 
+        System.out.println("STATING HTTP");
         server = vertx.createHttpServer()
                 .requestHandler(router)
                 .listen(8080)
